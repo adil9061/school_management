@@ -1,0 +1,96 @@
+{% extends "teacher/base.html" %}
+{% block content %}
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f2f2f2;
+    }
+
+    h1 {
+      text-align: center;
+      color: #333;
+    }
+
+    form {
+      background-color: #fff;
+      padding: 20px;
+      border-radius: 5px;
+      width: 300px;
+      margin: 0 auto;
+      margin-top: 50px;
+      box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+    }
+
+
+    label {
+      display: block;
+      margin-bottom: 10px;
+      color: #666;
+    }
+
+    input[type="checkbox"] {
+      width: 100%;
+      padding: 10px;
+      border-radius: 5px;
+      border: none;
+      margin-bottom: 20px;
+      box-sizing: border-box;
+      border: 1px solid #ccc;
+    }
+
+    input[type="submit"] {
+      background-color: #333;
+      color: #fff;
+      padding: 10px 20px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+    
+    input[type="submit"]:hover {
+      background-color: #555;
+    }
+    p{
+        text-align : center;
+
+    }
+  </style>
+  <h1>Mark Attendance</h1>
+  <form method="post">
+    {% csrf_token %}
+    
+    <p>Date: {{ attendance.date }}</p>
+    <p>Teacher: {{ attendance.teacher.name }}</p>
+    
+    {% comment %} Morning Attendance {% endcomment %}
+    {% if time_allowed_for_morning %}
+      <div class="form-group">
+        <label for="morning_attendance">Morning Attendance:</label>
+        <input type="checkbox" id="morning_attendance" name="morning_attendance" {% if attendance.morning_attendance %}checked{% endif %}>
+      </div>
+    {% else %}
+      <p>Morning attendance can only be submitted before 12 PM.</p>
+    {% endif %}
+    
+    {% comment %} Afternoon Attendance {% endcomment %}
+    {% if time_allowed_for_afternoon %}
+      <div class="form-group">
+        <label for="afternoon_attendance">Afternoon Attendance:</label>
+        <input type="checkbox" id="afternoon_attendance" name="afternoon_attendance" {% if attendance.afternoon_attendance %}checked{% endif %}>
+      </div>
+    {% else %}
+      <p>Afternoon attendance can only be submitted after 12 PM.</p>
+    {% endif %}
+    
+    <br>
+    
+    <input type="submit" value="Submit">
+  </form>
+  {% if messages %}
+    <ul class="messages">
+      {% for message in messages %}
+        <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+      {% endfor %}
+    </ul>
+  {% endif %}
+{% endblock content %}

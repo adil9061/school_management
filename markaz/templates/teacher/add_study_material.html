@@ -1,0 +1,152 @@
+{% extends "teacher/base.html" %}
+{% block content %}
+<title>Add Study Material</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f2f2f2;
+            margin: 0;
+            padding: 0;
+        }
+
+        form {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 5px;
+            width: 300px;
+            margin: 0 auto;
+            margin-top: 50px;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            text-align: center;
+            color: #333;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 10px;
+            color: #666;
+        }
+
+        input[type="text"],
+        input[type="password"],
+        input[type="email"] {
+            width: 100%;
+            padding: 10px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+            margin-bottom: 20px;
+            box-sizing: border-box;
+        }
+
+        input[type="submit"] {
+            background-color: #333;
+            color: #fff;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        input[type="submit"]:hover {
+            background-color: #555;
+        }
+
+        p {
+            text-align: center;
+        }
+
+        /* Add styles for the file preview */
+        #file-preview {
+            text-align: center;
+        }
+    </style>
+    <h1>Add Study Material</h1>
+    <form method='post' enctype="multipart/form-data">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <div id="file-preview"></div>
+        <input type="submit" value="Add Study Material">
+    </form>
+    <script>
+        // Full-screen mode for an element
+        function toggleFullScreen(element) {
+            if (!document.fullscreenElement) {
+                element.requestFullscreen().catch((err) => {
+                    console.error(`Error attempting to enable full-screen mode: ${err.message}`);
+                });
+            } else {
+                document.exitFullscreen();
+            }
+        }
+    
+        // Function to preview selected file
+        function previewFile() {
+            const input = document.querySelector('#id_file');
+            const preview = document.querySelector('#file-preview');
+    
+            input.addEventListener('change', function () {
+                while (preview.firstChild) {
+                    preview.removeChild(preview.firstChild);
+                }
+    
+                if (input.files.length > 0) {
+                    const file = input.files[0];
+    
+                    // Checking that the file is image
+                    if (file.type.startsWith('image/')) {
+                        const image = document.createElement('img');
+                        image.src = URL.createObjectURL(file);
+                        image.style.width = '100%';
+                        image.style.height = 'auto';
+                        preview.appendChild(image);
+    
+                        // Added event listener for enable full-screen mode
+                        image.addEventListener('click', () => {
+                            toggleFullScreen(image);
+                        });
+                    }
+                    // Checking that the file is PDF
+                    else if (file.type === 'application/pdf') {
+                        const iframe = document.createElement('iframe');
+                        iframe.src = URL.createObjectURL(file);
+                        iframe.style.width = '100%';
+                        iframe.style.height = '500px';
+                        preview.appendChild(iframe);
+                    
+                        // Added event listener for enable full-screen mode (it is not working because some browsers didn't support this function)
+                        iframe.addEventListener('click', () => {
+                            toggleFullScreen(iframe);
+                        });
+                    }
+                    // Checking that the file is video
+                    else if (file.type.startsWith('video/')) {
+                        const video = document.createElement('video');
+                        video.src = URL.createObjectURL(file);
+                        video.style.width = '100%';
+                        video.style.height = 'auto';
+                        video.controls = true; // For video controls like pause and play
+                        preview.appendChild(video);
+    
+                        // Added event listener for enable full-screen mode
+                        video.addEventListener('click', () => {
+                            toggleFullScreen(video);
+                        });
+                    }
+                    // This will handle other file types
+                    else {
+                        const errorText = document.createElement('p');
+                        errorText.textContent = 'Unsupported file type. Please select an image, PDF, or video file.';
+                        preview.appendChild(errorText);
+                    }
+                }
+            });
+        }
+    
+        window.addEventListener('DOMContentLoaded', (event) => {
+            previewFile();
+        });
+    </script>
+{% endblock content %}

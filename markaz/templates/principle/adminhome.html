@@ -1,0 +1,189 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Home</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <style>
+        /* Custom CSS for the navbar */
+        .navbar {
+            background-color: #87CEEB; /* Change background color to a shade of blue */
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Add a subtle shadow */
+        }
+
+        .navbar-brand {
+            color: #fff;
+            font-weight: bold;
+            font-size: 24px; /* Increase font size */
+        }
+
+        .navbar-toggler-icon {
+            background-color: #fff;
+        }
+
+        .navbar-nav .nav-link {
+            color: #fff;
+            font-weight: 600; /* Increase font weight */
+            margin-right: 15px;
+            transition: color 0.3s; /* Add a smooth color transition */
+        }
+
+        .navbar-nav .nav-link:hover {
+            color: #ccc;
+        }
+
+        /* Styling for notifications */
+        .notification-container {
+            position: fixed;
+            top: 60px; /* Adjust the distance from the top as needed */
+            right: 20px; /* Adjust the distance from the right as needed */
+            z-index: 9999; /* Ensure notifications appear above other content */
+        }
+
+        .notification {
+            background-color: #f0ad4e;
+            color: black;
+            border-radius: 4px;
+            padding: 10px 20px;
+            margin-bottom: 10px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        .close-notification {
+            background-color: #f0ad4e;
+            color: black;
+            border: none;
+            border-radius: 4px;
+            padding: 5px 10px;
+            margin-left: 10px;
+            cursor: pointer;
+        }
+        .button-box {
+            max-width : 400px;
+            margin: 0 auto;
+            text-align: center;
+        }
+        
+        .button {
+            text-decoration: none;
+            color: #3498db;
+            display: block;
+            margin: 10px 0;
+            font-size: 18px;
+            transition: color 0.3s;
+        }
+        
+        .button:hover {
+            color: #ff5733;
+        }
+        
+        body {
+            background-image: url('../../static/images/School.jpg'); /* Replace 'your-image-url.jpg' with your image URL */
+            background-size: cover; /* Cover the entire viewport */
+            background-attachment: fixed; /* Fixed background */
+        }
+    </style><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+
+</head>
+<body>
+
+    <nav class="navbar navbar-expand-lg navbar-light">
+        <a class="navbar-brand" href="#">Admin Home</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav ml-auto">
+                <li class="nav-item active">
+                    <a class="nav-link" href="admin-home">
+                        <i class="fas fa-home"></i> 
+                    </a>
+                </li>                
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="Academic_Dropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        Register
+                    </a>
+                    <div class="dropdown-menu" aria-labelledby="Academic_Dropdown">
+                        <a class="dropdown-item" href="{% url "student-registration" %}">Student Register <i class="fas fa-user-plus"></i></a>
+                        <a class="dropdown-item" href="{% url "teacher-registration" %}">Teacher Register <i class="fas fa-user-plus"></i></a>
+                    </div>
+                </li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="Academic_Dropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        Course Details
+                    </a>
+                    <div class="dropdown-menu" aria-labelledby="Academic_Dropdown">
+                        <a class="dropdown-item" href="{% url "create_course" %}">Add Course</a>
+                        <a class="dropdown-item" href="{% url "add-exam" %}">Add Exam</a>
+                        <a class="dropdown-item" href="{% url "add-subject" %}">Add Subject</a>
+                        <a class="dropdown-item" href="{% url "course_list" %}">Course List</a>
+                        <a class="dropdown-item" href="{% url "exam_list" %}">Exam List</a>
+                        <a class="dropdown-item" href="{% url "subject_list" %}">Subject List</a>
+                    </div>
+                </li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="Academic_Dropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <i class="fas fa-map-marker-alt"></i> Location
+                    </a>
+                    <div class="dropdown-menu" aria-labelledby="Academic_Dropdown">
+                        <a class="dropdown-item" href="{% url "add-country" %}">Add Country</a>
+                        <a class="dropdown-item" href="{% url "add-state" %}">Add State</a>
+                        <a class="dropdown-item" href="{% url "add-city" %}">Add City</a>
+                        <a class="dropdown-item" href="{% url "country_list" %}">Country List</a>
+                        <a class="dropdown-item" href="{% url "state_list" %}">State List</a>
+                        <a class="dropdown-item" href="{% url "city_list" %}">City List</a>
+
+                    </div>
+                </li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="Academic_Dropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        Announcement
+                    </a>
+                    <div class="dropdown-menu" aria-labelledby="Academic_Dropdown">
+                        <a class="dropdown-item" href="{% url "create_announcement" %}">Create Announcement</a>
+                        <a class="dropdown-item" href="{% url "announcement_list" %}">Announcements List</a>
+                    </div>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url "list_student" %}">Student List <i class="fas fa-user-circle"></i></a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url "list_teacher" %}">Teacher List <i class="fas fa-user-circle"></i></a>
+                </li>
+
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url "logout" %}">Logout</a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+    <br><br>
+
+    <div class="button-box">
+        <a href="{% url "add-academic-detail" %}" class="button">Add Student Academic Details</a>
+        <a href="{% url "student-list" %}" class="button">Student Mark List</a>
+        <a href="{% url "view_teacher_attendance" %}" class="button">View Teacher Attendance</a>
+        <a href="{% url "create_certificate" %}" class="button">Create Certificate</a>
+        <a href="{% url "certificate_list" %}" class="button">View Certificate</a>
+        <a href="{% url "add_room" %}" class="button">Add Chat Room</a>
+        <a href="{% url "admin_rooms" %}" class="button">Chat <i class="fas fa-comments"></i></a>
+        <a href="{% url "deleted_teacher_list" %}" class="button">Removed Teacher List</a>
+        <a href="{% url "deleted_student_list" %}" class="button">Removed Student List</a>
+
+    </div>
+    <script>
+        window.onpageshow = function (event) {
+            if (event.persisted) {
+                window.location.reload();
+            }
+        };
+    </script>
+</body>
+</html>

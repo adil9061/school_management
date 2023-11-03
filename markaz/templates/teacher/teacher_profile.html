@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Teacher Profile</title>
+    <style>
+        /* Style for the container */
+        .profile-container {
+            background-color: #3498db;
+            border: 2px solid #2980b9;
+            border-radius: 5px;
+            padding: 20px;
+            max-width: 400px;
+            margin: 0 auto;
+            text-align: center;
+        }
+
+        h1 {
+            font-size: 32px;
+            margin: 10px 0;
+            color: #fff;
+        }
+
+        p {
+            font-size: 18px;
+            margin: 10px 0;
+            color: #ecf0f1;
+        }
+
+        a {
+            background-color: #e74c3c;
+            color: #fff;
+            padding: 10px 20px;
+            text-decoration: none;
+            font-weight: bold;
+            border-radius: 5px;
+        }
+
+        /* Add hover effect to the Back to Home link */
+        a:hover {
+            background-color: #c0392b;
+        }
+        p{
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <div class="profile-container">
+        <h1>Welcome {{ teacher.name }}</h1>
+        <p>Registration ID: {{ teacher.reg_id }}</p>
+        <p>Contact: {{ teacher.contact }}</p>
+        <p>Country: {{ teacher.country }}</p>
+        <p>State: {{ teacher.state }}</p>
+        <p>City: {{ teacher.city }}</p>
+    </div>
+    <br><br>
+   <p><a href="{% url 'teacher_home' %}">Back to Home</a></p>
+
+</body>
+</html>

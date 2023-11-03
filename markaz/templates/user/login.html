@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login Page</title>
+            <style>
+        /* CSS styles */
+        body {
+          font-family: Arial, sans-serif;
+          background-color: #f2f2f2;
+        }
+  
+        form {
+          background-color: #fff;
+          padding: 20px;
+          border-radius: 5px;
+          width: 300px;
+          margin: 0 auto;
+          margin-top: 50px;
+          box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+        }
+  
+        h1 {
+          text-align: center;
+          color: #333;
+        }
+  
+        label {
+          display: block;
+          margin-bottom: 10px;
+          color: #666;
+        }
+  
+        input[type="text"],
+        input[type="password"],
+        input[type="email"] {
+          width: 100%;
+          padding: 10px;
+          border-radius: 5px;
+          border: none;
+          margin-bottom: 20px;
+          box-sizing: border-box;
+          border: 1px solid #ccc;
+        }
+  
+        button[type="submit"] {
+          background-color: #333;
+          color: #fff;
+          padding: 10px 20px;
+          border: none;
+          border-radius: 5px;
+          cursor: pointer;
+        }
+  
+        button[type="submit"]:hover {
+          background-color: #555;
+        }
+        p{
+            text-align : center;
+
+        }
+        .popup {
+          display: none;
+          position: fixed;
+          top: 0; /* Display at the top of the screen */
+          left: 80%;
+          background-color: #f44336; /* Red background color */
+          color: white; /* White text color */
+          padding: 20px;
+          border-radius: 5px;
+          box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
+          z-index: 9999;
+      }
+      
+      /* Close button for the popup */
+      .close {
+        position: absolute;
+        top: 10px;
+        right: 10px;
+        color: white;
+        cursor: pointer;
+        font-size: 24px; /* Adjust the font size as needed */
+        padding: 5px; /* Adjust the padding as needed */
+    }
+      </style>
+</head>
+<body>
+    <h1>Login Form</h1>
+    <form method ='post' action="{% url "custom_login" %}">
+        {% csrf_token %}
+        <label for="username">Username:</label>
+        <input type="text" name="username" required>
+        <br><br>
+        <label for="password">Password:</label>
+        <input type="password" name="password" required>
+        <br><br>
+        <label for="email">Email:</label>
+        <input type="email" name="email" required>
+        <br><br>
+        <button type="submit">Login</button>
+    </form>
+
+    {% if error_message %}
+      <div id="errorPopup" class="popup">
+        <span class="close" onclick="closeErrorPopup()">&times;</span>
+
+          {{ error_message }}
+
+      </div>
+    {% endif %}
+
+    <script>
+        function closeErrorPopup() {
+            var popup = document.getElementById("errorPopup");
+            popup.style.display = "none";
+        }
+        
+        var errorPopup = document.getElementById("errorPopup");
+        if (errorPopup) {
+            errorPopup.style.display = "block";
+        }
+    </script>
+</body>
+</html>

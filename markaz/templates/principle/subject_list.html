@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Subject List</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.0/css/all.min.css">
+
+    <style>
+        table {
+            border-collapse: collapse;
+            width: 100%;
+            }
+
+            th, td {
+            text-align: center;
+            padding: 8px;
+            }
+
+            tr:nth-child(even){background-color: #f2f2f2}
+
+            th {
+            background-color: #04AA6D;
+            color: white;
+            }
+        p{
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <h2>Subject List</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>Subject_name</th>
+
+                <th>Update</th>
+                <th>Delete</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for subject in subjects %}
+            <tr>
+                <td>{{ subject.name }}</td>
+
+                <td><a href="{% url 'update_subject' subject.id %}"><i class="fas fa-edit"></i></a></td>
+                <td><a href="{% url 'delete_subject' subject.id %}"><i class="fas fa-trash"></i></a></td>
+            </tr>
+            {% endfor %}
+        </tbody>
+
+    </table>
+    <br><br>
+    <p> <a href="{% url "admin-home" %}">Back to home</a> </p>
+
+</body>
+</html>

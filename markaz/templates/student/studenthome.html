@@ -1,0 +1,187 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Home</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+
+
+    <style>
+        /* Custom CSS for the navbar */
+        .navbar {
+            background-color: #F8B195; /* Change background color to a shade of orange */
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Add a subtle shadow */
+        }
+
+        .navbar-brand {
+            color: #fff;
+            font-weight: bold;
+            font-size: 30px; /* Increase font size */
+        }
+
+        .navbar-toggler-icon {
+            background-color: #fff;
+        }
+
+        .navbar-nav .nav-link {
+            color: #fff;
+            font-weight: 600; /* Increase font weight */
+            margin-right: 15px;
+            transition: color 0.3s; /* Add a smooth color transition */
+        }
+
+        .navbar-nav .nav-link:hover {
+            color: #ccc;
+        }
+
+        /* Styling for notifications */
+        .notification-container {
+            position: fixed;
+            top: 60px; /* Adjust the distance from the top as needed */
+            right: 20px; /* Adjust the distance from the right as needed */
+            z-index: 9999; /* Ensure notifications appear above other content */
+        }
+
+        .notification {
+            background-color: #f0ad4e;
+            color: black;
+            border-radius: 4px;
+            padding: 10px 20px;
+            margin-bottom: 10px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        .close-notification {
+            background-color: #f0ad4e;
+            color: black;
+            border: none;
+            border-radius: 4px;
+            padding: 5px 10px;
+            margin-left: 10px;
+            cursor: pointer;
+        }
+        body {
+            background-image: url('../../static/images/student.jpg'); /* Replace 'your-image-url.jpg' with your image URL */
+            background-size: cover; /* Cover the entire viewport */
+            background-attachment: fixed; /* Fixed background */
+        }
+
+    </style>
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-light">
+        <a class="navbar-brand" href="#">Student Home</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav ml-auto">
+                <li class="nav-item active">
+                    <a class="nav-link" href="{% url "student_home" %}"><i class="fas fa-home"></i></a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url "student_profile" %}">
+                        <i class="fas fa-user"></i>
+                    </a>
+                </li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="Academic_Dropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        Academic
+                    </a>
+                    <div class="dropdown-menu" aria-labelledby="Academic_Dropdown">
+                        <a class="dropdown-item" href="student_academic_detail">Academic Detail</a>
+                    </div>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url "materials_list" %}">Study Materials <i class="fas fa-book"></i></a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url "certificate" %}">Certificate</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url "academic_detail_pdf" %}">Mark List PDF</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url "student_announcements" %}">Announcements</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url "student_rooms" %}">Chat <i class="fas fa-comments"></i></a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url "video_librarys" %}">Video <i class="fas fa-video"></i></a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url "logout" %}">Logout</a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+
+    <div class="notification-container"></div>
+    
+    <script>
+        let notificationTimeout; //  For timeout reference
+    
+        function checkForNotifications() {
+            $.ajax({
+                url: "{% url 'see_notification' %}",
+                type: "GET",
+                dataType: "json",
+                success: function(data) {
+                    if (data.notification_message) {
+                        // For displaying the new notifications
+                        displayNotification(data.notification_message);
+                    }
+                },
+                error: function() {
+                }
+            });
+        }
+
+        function displayNotification(notificationMessage) {
+            // Create a new notification (if one notification came before end time of current notification it also want display under the current notification)
+            const notificationElement = $("<div>").addClass("notification").text(notificationMessage);
+        
+            // making an close button for notification if student seen it
+            const closeButton = $("<button>").addClass("close-notification").text("Close");
+            
+            notificationElement.append(closeButton);
+            
+            // Append the notification element to the container
+            $(".notification-container").append(notificationElement);
+        
+            // while clicking close button notification want remove from the screen
+            closeButton.on("click", function() {
+                notificationElement.remove();
+            });
+        
+            // Notification want automatically remove after 1 day
+            setTimeout(function() {
+                notificationElement.remove();
+            }, 24 * 60 * 60 * 1000);
+        }
+    
+        $(document).ready(function() {
+            // If notification is there it want display automatically when page loads
+            checkForNotifications();
+    
+            // For checking notifications every 5 sec
+            setInterval(checkForNotifications, 5000);
+        });
+    </script>
+
+    <script>
+        window.onpageshow = function (event) {
+            if (event.persisted) {
+                window.location.reload();
+            }
+        };
+    </script>
+
+</body>
+</html>

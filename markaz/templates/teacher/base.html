@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        /* Your existing CSS styles */
+
+        /* Navigation bar styles */
+        ul.navbar {
+            list-style-type: none;
+            margin: 0;
+            padding: 0;
+            background-color: #2db3b5;
+            overflow: hidden;
+            height: 50px;
+        }
+
+        li.nav-item {
+            float: center;
+        }
+
+        li.nav-item a {
+            display: block;
+            color: white;
+            text-align: center;
+            padding: 14px 16px;
+            text-decoration: none;
+        }
+
+        li.nav-item a:hover {
+        }
+    </style>
+</head>
+<body>
+    <ul class="navbar">
+        <li class="nav-item"><a href="{% url "teacher_home" %}"><i class="fas fa-home"></i></a></li>
+    </ul>
+</body>
+</html>
+
+{% block content %}{% endblock  %}

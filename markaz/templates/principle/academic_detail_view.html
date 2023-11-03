@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Academic Detail View</title>
+    <style>
+        table {
+            border-collapse: collapse;
+            width: 100%;
+        }
+
+        th, td {
+            border: 1px solid black;
+            padding: 8px;
+            text-align: left;
+        }
+
+        th {
+            background-color: #f2f2f2;
+        }
+
+        .button {
+            display: inline-block;
+            padding: 12px 22px;
+            font-size: 20px;
+            cursor: pointer;
+            text-align: center;
+            text-decoration: none;
+            outline: none;
+            color: #fff;
+            background-color: #4CAF50;
+            border: none;
+            border-radius: 12px;
+            box-shadow: 0 9px #999;
+            margin-left: 47%;
+        }
+
+        .button:hover {
+            background-color: #3e8e41;
+        }
+
+        .button:active {
+            background-color: #3e8e41;
+            box-shadow: 0 5px #666;
+            transform: translateY(4px);
+        }
+    </style>
+</head>
+<body>
+    <h1>Academic Details for {{ student.name }}</h1>
+    <table>
+        <tr>
+            <th>Exam Name</th>
+            <th>Course</th>
+            <th>Subject</th>
+            <th>Individual Score</th>
+            <th>Grade</th>
+        </tr>
+        {% for exam, course_details in grouped_academic_details.items %}
+        <tr>
+            <td rowspan="{{ course_details.rowspan }}">{{ exam.0 }}</td>
+            <td rowspan="{{ course_details.rowspan }}">{{ exam.1 }}</td>
+            {% for detail in course_details.details %}
+            <td>{{ detail.subject }}</td>
+            <td>{{ detail.individual_score }}</td>
+            <td>{{ detail.grade }}</td>
+        </tr>
+        {% endfor %}
+        {% comment %} For displaying the total score {% endcomment %}
+        <tr>
+            <td colspan="3"><strong>Total Score:</strong></td>
+            <td>{{ course_details.total_score }}</td>
+        </tr>
+        {% comment %} For displaying the overall grade {% endcomment %}
+        <tr>
+            <td colspan="4"><strong>Overall Grade:</strong></td>
+            <td>{{ course_details.overall_grade }}</td>
+        </tr>
+        {% comment %} For adding an empty row between courses {% endcomment %}
+        <tr>
+            <td>&nbsp;</td>
+            <td>&nbsp;</td>
+            <td>&nbsp;</td>
+            <td>&nbsp;</td>
+            <td>&nbsp;</td>
+        </tr>
+        {% endfor %}
+    </table>
+    <br><br>
+    <a class="btn" href="{% url "export_academic_detail" %}">
+        <button class="button" type="submit">Export</button>
+    </a>
+</body>
+</html>

@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Teacher List</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.0/css/all.min.css">
+    <style>
+        table {
+            border-collapse: collapse;
+            width: 100%;
+            }
+
+            th, td {
+            text-align: center;
+            padding: 8px;
+            }
+
+            tr:nth-child(even){background-color: #f2f2f2}
+
+            th {
+            background-color: #04AA6D;
+            color: white;
+            }
+
+        .button {
+        display: inline-block;
+        padding: 12px 22px;
+        font-size: 20px;
+        cursor: pointer;
+        text-align: center;
+        text-decoration: none;
+        outline: none;
+        color: #fff;
+        background-color: #4CAF50;
+        border: none;
+        border-radius: 12px;
+        box-shadow: 0 9px #999;
+        margin-left : 47%;
+        }
+
+        .button:hover {background-color: #3e8e41}
+
+        .button:active {
+        background-color: #3e8e41;
+        box-shadow: 0 5px #666;
+        transform: translateY(4px);
+        }
+        p{
+            text-align : center;
+        }
+    </style>
+</head>
+<body>
+    <h2>Teacher List</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>Reg_no</th>
+                <th>Name</th>
+                <th>Country</th>
+                <th>State</th>
+                <th>City</th>
+                <th>Contact</th>
+                <th>Email</th>
+                <th>Update</th>
+                <th>Delete</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for teacher in teachers %}
+            <tr>
+                <td>{{ teacher.reg_id }}</td>
+                <td>{{ teacher.name }}</td>
+                <td>{{ teacher.country }}</td>
+                <td>{{ teacher.state }}</td>
+                <td>{{ teacher.city }}</td>
+                <td>{{ teacher.contact}}</td>
+                <td>{{ teacher.user.email }}</td>
+                <td><a href="{% url 'update_teacher' teacher.id %}"><i class="fas fa-edit"></i></a></td>
+                <td><a href="{% url 'delete_teacher' teacher.id %}"><i class="fas fa-trash"></i></a></td>
+            </tr>
+            {% endfor %}
+        </tbody>
+
+    </table>
+    <br><br>
+    <a class="btn" href="{% url "export_teachers" %}">
+        <button class="button" type="submit">Export</button>
+    </a>
+    <br><br>
+    <p> <a href="{% url "admin-home" %}">Back to home</a> </p>
+
+</body>
+</html>

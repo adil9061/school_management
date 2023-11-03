@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rooms</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+            margin: 0;
+            padding: 0;
+        }
+        header {
+            background-color: #333;
+            color: #fff;
+            padding: 20px 0;
+            text-align: center;
+        }
+        h1 {
+            font-size: 36px;
+        }
+        .room-card {
+            background-color: yellow;
+            border-radius: 50px;
+            margin: 20px;
+            padding: 15px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            display: inline-block; /* Display side by side */
+            vertical-align: top; /* Align to the top of the container */
+            width: calc(300px - 25px); /* Adjust width based on your needs */
+        }
+        h2 {
+            font-size: 24px;
+            margin: 0;
+            color: #333;
+        }
+        p {
+            font-size: 18px;
+            color: #777;
+        }
+        .join-button {
+            display: inline-block;
+            background-color: #007BFF;
+            color: #fff;
+            padding: 10px 20px;
+            text-decoration: none;
+            border-radius: 5px;
+            font-weight: bold;
+            margin-top: 10px;
+        }
+        .join-button:hover {
+            background-color: #0056b3;
+        }
+        .container {
+            text-align: center;
+        }
+        p{
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Rooms</h1>
+    </header>
+    <div class="container">
+        {% for room in rooms %}
+            <div class="room-card">
+                <h2>{{ room.name }}</h2>
+                <p>{{ room.course }}</p>
+                <a class="join-button" href="{% url 'room' room.slug %}">Join</a>
+            </div>
+        {% endfor %}
+    </div>
+    <p><a href="{% url 'student_home' %}">Back to Home</a></p>
+
+</body>
+</html>

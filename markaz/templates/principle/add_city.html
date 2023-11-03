@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add City</title>
+    <style>
+        /* CSS styles */
+        body {
+          font-family: Arial, sans-serif;
+          background-color: #f2f2f2;
+        }
+  
+        form {
+          background-color: #fff;
+          padding: 20px;
+          border-radius: 5px;
+          width: 300px;
+          margin: 0 auto;
+          margin-top: 50px;
+          box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+        }
+  
+        h1 {
+          text-align: center;
+          color: #333;
+        }
+  
+        label {
+          display: block;
+          margin-bottom: 10px;
+          color: #666;
+        }
+  
+        input[type="text"]{
+          width: 100%;
+          padding: 10px;
+          border-radius: 5px;
+          border: none;
+          margin-bottom: 20px;
+          box-sizing: border-box;
+          border: 1px solid #ccc;
+        }
+  
+        button[type="submit"] {
+          background-color: #333;
+          color: #fff;
+          padding: 10px 20px;
+          border: none;
+          border-radius: 5px;
+          cursor: pointer;
+          display: block;
+          margin: 0 auto;
+        }
+        
+        button[type="submit"]:hover {
+          background-color: #555;
+        }
+        p{
+            text-align : center;
+
+        }
+    </style>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+<body>
+    <h1>Add City</h1>
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">Submit</button>
+    </form>
+    <p> <a href="{% url "admin-home" %}">Back to home</a> </p>
+
+
+    <script>
+      var loadStatesURL = "{% url 'load_states' %}";
+
+      $(document).ready(function () {
+          $("#id_country").change(function () {
+              var country_id = $(this).val();
+              $.ajax({
+                  url: loadStatesURL,
+                  data: {
+                      'country_id': country_id
+                  },
+                  success: function (data) {
+                      var state_dropdown = $("#id_state");
+                      state_dropdown.empty();
+                      state_dropdown.append($('<option value="">Select State</option>'));
+                      $.each(data.states, function (i, state) {
+                          state_dropdown.append($('<option>').text(state.name).attr('value', state.id));
+                      });
+                  }
+              });
+          });
+      });
+  </script>
+
+</body>
+</html>
+

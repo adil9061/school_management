@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Teacher Registration</title>
+        <style>
+        /* CSS styles */
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f2f2f2;
+        }
+
+        form {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 5px;
+            width: 300px;
+            margin: 0 auto;
+            margin-top: 50px;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        h2 {
+            text-align: center;
+            color: #333;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 10px;
+            color: #666;
+        }
+
+        input[type="text"],
+        input[type="password"],
+        input[type="email"] {
+            width: 100%;
+            padding: 10px;
+            border-radius: 5px;
+            border: none;
+            margin-bottom: 20px;
+            box-sizing: border-box;
+            border: 1px solid #ccc;
+        }
+
+        button[type="submit"] {
+            background-color: #333;
+            color: #fff;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            display: block;
+            margin: 0 auto;
+        }
+
+        button[type="submit"]:hover {
+            background-color: #555;
+        }
+        p{
+            text-align : center;
+
+        }
+    </style>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://www.google.com/recaptcha/api.js" async defer></script>
+    <script src="https://www.google.com/recaptcha/api.js?render=6Ldy03QoAAAAACgH_pge04Y5eEqZRwg8hy6AxUF3"></script>
+
+
+</head>
+<body>
+    <h2>Teacher Registration</h2>
+    <form method="post">
+        {% csrf_token %}
+        <input type="text" name="username" placeholder="Username" required>
+        <input type="password" name="password" placeholder="Password" required>
+        <input type="email" name="email" placeholder="E-mail" required>
+        <input type="text" name="reg_id" value="TR" placeholder="Reg_Id" required>
+        <input type="text" name="name" placeholder="Name" required>
+        <input type="text" name="contact" placeholder="Contact" required>
+        <label for="country">Country:</label>
+        {{ form.country }}
+        <br><br>
+        <label for="state">State:</label>
+        {{ form.state }}
+        <br><br>
+        <label for="city">City:</label>
+        {{ form.city }}
+        <br><br>
+        <input type="text" id="token" name="token" hidden>
+        <br>
+        <button type="submit">Add Teacher</button>
+
+    </form>
+
+    <p> <a href="{% url "admin-home" %}">Back to home</a> </p>
+
+    <script>
+        var loadStatesURL = "{% url 'load_states' %}";
+        var loadCitiesURL = "{% url 'load_cities' %}";
+
+        $(document).ready(function () {
+            $("#id_country").change(function () {
+                var country_id = $(this).val();
+                $.ajax({
+                    url: loadStatesURL,
+                    data: {
+                        'country_id': country_id
+                    },
+                    success: function (data) {
+                        var state_dropdown = $("#id_state");
+                        state_dropdown.empty();
+                        state_dropdown.append($('<option value="">Select State</option>'));
+                        $.each(data.states, function (i, state) {
+                            state_dropdown.append($('<option>').text(state.name).attr('value', state.id));
+                        });
+                    }
+                });
+            });
+
+            $("#id_state").change(function () {
+                var state_id = $(this).val();
+                $.ajax({
+                    url: loadCitiesURL,
+                    data: {
+                        'state_id': state_id
+                    },
+                    success: function (data) {
+                        var city_dropdown = $("#id_city");
+                        city_dropdown.empty();
+                        city_dropdown.append($('<option value="">Select City</option>'));
+                        $.each(data.cities, function (i, city) {
+                            city_dropdown.append($('<option>').text(city.name).attr('value', city.id));
+                        });
+                    }
+                });
+            });
+        });
+    </script>
+    <script>
+        grecaptcha.ready(function () {
+            grecaptcha.execute('6Ldy03QoAAAAACgH_pge04Y5eEqZRwg8hy6AxUF3', { action: 'submit' }).then(function (token) {
+                document.getElementById('token').value = token;
+                console.log(token)
+            });
+        });
+    </script>
+
+</body>
+</html>
+{% comment %} 
+<form method="post">
+    {% csrf_token %}
+    {% if form.errors %}
+        <ul>
+            {% for field_name, field_errors in form.errors.items %}
+                {% for error in field_errors %}
+                    <li>{{ field_name }}: {{ error }}</li>
+                {% endfor %}
+            {% endfor %}
+        </ul>
+    {% endif %}
+    <!-- Rest of your form fields -->
+</form> {% endcomment %}

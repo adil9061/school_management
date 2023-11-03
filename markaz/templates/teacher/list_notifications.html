@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Exam List</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.0/css/all.min.css">
+
+    <style>
+        table {
+            border-collapse: collapse;
+            width: 100%;
+            }
+
+            th, td {
+            text-align: center;
+            padding: 8px;
+            }
+
+            tr:nth-child(even){background-color: #f2f2f2}
+
+            th {
+            background-color: #04AA6D;
+            color: white;
+            }
+        p{
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <h1>Notification List</h1>
+    <table>
+        <thead>
+            <tr>
+                <th>Sender</th>
+                <th>Message</th>
+                <th>Sended Date</th>
+                <th>Scheduled Date</th>
+                <th>Update</th>
+                <th>Delete</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for notification in notifications %}
+            <tr>
+                <td>{{ notification.sender }}</td>
+                <td>{{ notification.message }}</td>
+                <td>{{ notification.timestamp }}</td>
+                <td>{{ notification.scheduled_at }}</td>
+
+                <td><a href="{% url 'update_notification' notification.id %}"><i class="fas fa-edit"></i></a></td>
+                <td><a href="{% url 'delete_notification' notification.id %}"><i class="fas fa-trash"></i></a></td>
+            </tr>
+            {% endfor %}
+        </tbody>
+
+    </table>
+    <br><br>
+    <p> <a href="{% url "teacher_home" %}">Back to Home</a></p>
+
+</body>
+</html>

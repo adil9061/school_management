@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Update Student</title>
+    <style>
+        /* CSS styles */
+        body {
+          font-family: Arial, sans-serif;
+          background-color: #f2f2f2;
+        }
+  
+        form {
+          background-color: #fff;
+          padding: 20px;
+          border-radius: 5px;
+          width: 350px;
+          margin: 0 auto;
+          margin-top: 50px;
+          box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+        }
+  
+        h2 {
+          text-align: center;
+          color: #333;
+        }
+  
+        label {
+          display: block;
+          margin-bottom: 10px;
+          color: #666;
+        }
+  
+        input[type="text"]{
+          width: 100%;
+          padding: 10px;
+          border-radius: 5px;
+          border: none;
+          margin-bottom: 20px;
+          box-sizing: border-box;
+          border: 1px solid #ccc;
+        }
+  
+        button[type="submit"] {
+            background-color: #333;
+            color: #fff;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            display: block;
+            margin: 0 auto; /* Center the button */
+          }
+        
+        button[type="submit"]:hover {
+          background-color: #555;
+        }
+        p{
+            text-align : center;
+
+        }
+    </style>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+</head>
+<body>
+    <h2>Update Student</h2>
+    <form method="post">
+        {% csrf_token %}
+        {{ form.reg_id }}
+        {{ form.name }}
+        {{ form.contact }}
+        {{ form.course }}
+        <br><br>
+        {{ form.country }}
+        <br><br>
+        {{ form.state }}
+        <br><br>
+        {{ form.city }}
+        <br><br>
+        {{ form.start_year }}
+        {{ form.end_year }}
+        <button type="submit">Update Student</button>
+    </form>
+   <p><a href="{% url 'list_student' %}">Back</a></p>
+
+<script>
+    var loadStatesURL = "{% url 'load_states' %}";
+    var loadCitiesURL = "{% url 'load_cities' %}";
+
+    $(document).ready(function () {
+        $("#id_country").change(function () {
+            var country_id = $(this).val();
+            $.ajax({
+                url: loadStatesURL,
+                data: {
+                    'country_id': country_id
+                },
+                success: function (data) {
+                    var state_dropdown = $("#id_state");
+                    state_dropdown.empty();
+                    state_dropdown.append($('<option value="">Select State</option>'));
+                    $.each(data.states, function (i, state) {
+                        state_dropdown.append($('<option>').text(state.name).attr('value', state.id));
+                    });
+                }
+            });
+        });
+
+        $("#id_state").change(function () {
+            var state_id = $(this).val();
+            $.ajax({
+                url: loadCitiesURL,
+                data: {
+                    'state_id': state_id
+                },
+                success: function (data) {
+                    var city_dropdown = $("#id_city");
+                    city_dropdown.empty();
+                    city_dropdown.append($('<option value="">Select City</option>'));
+                    $.each(data.cities, function (i, city) {
+                        city_dropdown.append($('<option>').text(city.name).attr('value', city.id));
+                    });
+                }
+            });
+        });
+    });
+</script>
+{% if form.errors.reg_id %}
+  <p class="error">{{ form.errors.reg_id.0 }}</p>
+{% endif %}
+</body>
+</html>

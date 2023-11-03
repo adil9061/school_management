@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Study Materials</title>
+    <style>
+        table {
+            border-collapse: collapse;
+            width: 100%;
+            }
+
+            th, td {
+            text-align: center;
+            padding: 8px;
+            }
+
+            tr:nth-child(even){background-color: #f2f2f2}
+
+            th {
+            background-color: #04AA6D;
+            color: white;
+            }
+            h1{
+                text-align: center;
+            }
+            p{
+                text-align: center;
+            }
+    </style>
+</head>
+<body>
+    <h1> Study Materials </h1>
+    <table>
+        <tr>
+            <th>Title</th>
+            <th>Description</th>
+            <th>File</th>
+        </tr>
+        {% for material in study_materials %}
+            <tr>
+                <td>{{ material.title }}</td>
+                <td>{{ material.description }}</td>
+                <td><a href="{% url 'view_materials' material.id %}">View</a></td>
+            </tr>
+        {% endfor %}
+    </table>
+    <p><a href="{% url 'student_home' %}">Back to Home</a></p>
+
+</body>
+</html>

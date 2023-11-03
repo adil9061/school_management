@@ -1,0 +1,145 @@
+{% comment %} <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Academic Details</title>
+    <style>
+        table {
+            border-collapse: collapse;
+            width: 100%;
+        }
+
+        th, td {
+            border: 1px solid black;
+            padding: 8px;
+        }
+
+        th {
+            background-color: #f2f2f2;
+        }
+    </style>
+</head>
+<body>
+    <h1>Academic Details for {{ student.name }}</h1>
+
+    {% if grouped_academic_details %}
+        <table>
+                <tr>
+                    <th>Exam</th>
+                    <th>Course</th>
+                    <th>Subject</th>
+                    <th>Individual Score</th>
+                    <th>Grade</th>
+                </tr>
+                {% for exam, details in grouped_academic_details.items %}
+                <tr>
+                    <td rowspan="{{ details.rowspan }}">{{ exam.0 }}</td>
+                    <td rowspan="{{ details.rowspan }}">{{ exam.1 }}</td>
+                    {% for academic_detail in details.details %}
+                    <td>{{ academic_detail.subject }}</td>
+                    <td>{{ academic_detail.individual_score }}</td>
+                    <td>{{ academic_detail.grade }}</td>
+                    </tr>
+                    {% endfor %}
+                {% endfor %}
+            </tbody>
+        </table>
+    {% else %}
+        <p>No academic details available for this student.</p>
+    {% endif %}
+    
+    <a href="{% url 'student_home' %}">Back to Home</a>
+</body>
+</html> {% endcomment %}
+
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Academic Detail View</title>
+    <style>
+        table {
+            border-collapse: collapse;
+            width: 100%;
+        }
+
+        th, td {
+            border: 1px solid black;
+            padding: 8px;
+            text-align: left;
+        }
+
+        th {
+            background-color: #f2f2f2;
+        }
+
+        .button {
+            display: inline-block;
+            padding: 12px 22px;
+            font-size: 20px;
+            cursor: pointer;
+            text-align: center;
+            text-decoration: none;
+            outline: none;
+            color: #fff;
+            background-color: #4CAF50;
+            border: none;
+            border-radius: 12px;
+            box-shadow: 0 9px #999;
+            margin-left: 90%;
+        }
+
+        .button:hover {
+            background-color: #3e8e41;
+        }
+
+        .button:active {
+            background-color: #3e8e41;
+            box-shadow: 0 5px #666;
+            transform: translateY(4px);
+        }
+    </style>
+</head>
+<body>
+    <h1>Academic Details for {{ student.name }}</h1>
+    <table>
+        <tr>
+            <th>Exam Name</th>
+            <th>Course</th>
+            <th>Subject</th>
+            <th>Individual Score</th>
+            <th>Grade</th>
+        </tr>
+        {% for exam, course_details in grouped_academic_details.items %}
+        <tr>
+            <td rowspan="{{ course_details.rowspan }}">{{ exam.0 }}</td>
+            <td rowspan="{{ course_details.rowspan }}">{{ exam.1 }}</td>
+            {% for detail in course_details.details %}
+            <td>{{ detail.subject }}</td>
+            <td>{{ detail.individual_score }}</td>
+            <td>{{ detail.grade }}</td>
+        </tr>
+        {% endfor %}
+        {% comment %} For displaying the total score  {% endcomment %}
+        <tr>
+            <td colspan="3"><strong>Total Score:</strong></td>
+            <td>{{ course_details.total_score }}</td>
+        </tr>
+        {% comment %} For displaying the overall grade {% endcomment %}
+        <tr>
+            <td colspan="4"><strong>Overall Grade:</strong></td>
+            <td>{{ course_details.overall_grade }}</td>
+        </tr>
+        {% comment %} For adding an empty row between courses {% endcomment %}
+        <tr>
+            <td>&nbsp;</td>
+            <td>&nbsp;</td>
+            <td>&nbsp;</td>
+            <td>&nbsp;</td>
+            <td>&nbsp;</td>
+        </tr>
+        {% endfor %}
+    </table>
+</body>
+</html>

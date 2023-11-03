@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="refresh" content="10">  {% comment %} For refresh every 10 sec {% endcomment %}
+    <title>Student Announcements</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.min.css">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+            margin: 0;
+            padding: 0;
+        }
+
+        header {
+            background-color: yellow;
+            color: black;
+            text-align: center;
+            padding: 20px 0;
+        }
+
+        h1 {
+            margin: 0;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 20px auto;
+            padding: 20px;
+            background-color: #fff;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .announcement {
+            border: 1px solid #ccc;
+            padding: 10px;
+            margin-bottom: 20px;
+        }
+
+        .announcement h2 {
+            margin-top: 0;
+        }
+
+        .announcement p {
+            margin: 10px 0;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Announcements</h1>
+    </header>
+    <div class="container">
+        <form method="post" id="myForm">
+            {% csrf_token %}
+            
+            {% for announcement in announcements %}
+                <div class="announcement" data-announcement-id="{{ announcement.id }}" >
+                    <h2>{{ announcement.title }}</h2>
+                    <p>{{ announcement.content }}</p>
+                    <p>Posted by: {{ announcement.user }}</p>
+                    <p>Posted on: {{ announcement.created_at }}</p>
+                </div>
+            {% endfor %}
+        </form>
+    </div>
+
+    <script>
+        function checkAnnouncementStatus() {
+            var currentTime = new Date();
+            
+            $(".announcement").each(function () {
+                var announcement = $(this);
+                var announcementTime = new Date(announcement.data("announcement-time"));
+                var difference = currentTime - announcementTime;
+                
+                // Announcement want remove after 1 day automatically
+                if (difference >= 24 * 60 * 60 * 1000) {
+                    announcement.hide();
+                }
+            });
+        }
+    </script>
+    
+
+</body>
+</html>

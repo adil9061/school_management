@@ -1037,17 +1037,19 @@ class AdminRoom(AdminRequiredMixin,View):
         }
         return render(request, 'principle/rooms.html', context)
 
-class RoomView(AdminRequiredMixin,DetailView):
-    model = Room
+class RoomView(AdminRequiredMixin,View):
     template_name = 'principle/room.html'
-    context_object_name = 'room'
 
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        room = self.object
+    def get(self, request, room_id):
+        room = get_object_or_404(Room, id=room_id)
         messages = Message.objects.filter(room=room)
-        context['messages'] = messages
-        return context
+
+        context = {
+            'room': room,
+            'messages': messages,
+        }
+
+        return render(request, self.template_name, context)
 
 # List of Deleted Student and Teacher
 

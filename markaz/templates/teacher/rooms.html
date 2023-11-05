@@ -70,7 +70,7 @@
             <div class="room-card">
                 <h2>{{ room.name }}</h2>
                 <p>{{ room.course }}</p>
-                <a class="join-button" href="{% url 'teacher_room' room.slug %}">Join</a>
+                <a class="join-button" href="{% url 'teacher_room' room.id %}">Join</a>
             </div>
         {% endfor %}
     </div>

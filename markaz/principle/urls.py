@@ -148,6 +148,6 @@ urlpatterns = [
 
     path('add_room/', views.CreateRoom.as_view(), name='add_room'),
     path('rooms/', views.AdminRoom.as_view(), name='admin_rooms'),
-    path('<slug:slug>/', views.RoomView.as_view(), name='admin_room'),
+    path('room/<int:room_id>/', views.RoomView.as_view(), name='admin_room'),
     
 ]

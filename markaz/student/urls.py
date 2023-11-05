@@ -37,7 +37,7 @@ urlpatterns = [
 
     path('student/rooms/', views.StudentRooms.as_view(), name='student_rooms'),
 
-    path('<slug:slug>/', views.RoomView.as_view(), name='room'),
+    path('room/<int:room_id>/', views.RoomView.as_view(), name='room'),
 
     # View Video Study Materials
 

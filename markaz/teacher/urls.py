@@ -49,6 +49,6 @@ urlpatterns = [
 
     path('rooms/', views.RoomList.as_view(), name='teacher_rooms'),
 
-    path('<slug:slug>/', views.RoomView.as_view(), name='teacher_room'),
+    path('room/<int:room_id>/', views.RoomView.as_view(), name='teacher_room'),
 
     ]

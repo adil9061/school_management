@@ -268,15 +268,17 @@ class RoomList(TeacherRequiredMixin,ListView):
         }
         return render(request, 'teacher/rooms.html', context)
 
-class RoomView(TeacherRequiredMixin,DetailView):
-    model = Room
+class RoomView(TeacherRequiredMixin,View):
     template_name = 'teacher/room.html'
-    context_object_name = 'room'
 
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        room = self.object
+    def get(self, request, room_id):
+        room = get_object_or_404(Room, id=room_id)
         messages = Message.objects.filter(room=room)
-        context['messages'] = messages
-        return context
+
+        context = {
+            'room': room,
+            'messages': messages,
+        }
+
+        return render(request, self.template_name, context)
 

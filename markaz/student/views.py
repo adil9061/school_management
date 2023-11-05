@@ -279,19 +279,19 @@ class StudentRooms(StudentRequiredMixin,View):
         return queryset
 
 
-class RoomView(StudentRequiredMixin,DetailView):
-
-    model = Room
+class RoomView(StudentRequiredMixin, View):
     template_name = 'student/room.html'
 
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        room = self.object
+    def get(self, request, room_id):
+        room = get_object_or_404(Room, id=room_id)
         messages = Message.objects.filter(room=room)
-        context['messages'] = messages
-        return context
 
+        context = {
+            'room': room,
+            'messages': messages,
+        }
 
+        return render(request, self.template_name, context)
 
 # view video library
 
